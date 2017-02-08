@@ -4,6 +4,7 @@
   "description": "a calendar for mobile",
   "main": "index.js",
   "scripts": {
+    "dev": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,8 @@
   "homepage": "https://github.com/a932455223/mobileCalendar#readme",
   "devDependencies": {
     "browser-sync": "^2.18.7",
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-sass": "^3.1.0"
   }
 }
