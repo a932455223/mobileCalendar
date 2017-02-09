@@ -2,7 +2,9 @@ var gulp        = require('gulp');
 var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
 var reload      = browserSync.reload;
-var jade = require('gulp-jade');
+var babel = require('gulp-babel');
+var sourcemaps = require('gulp-sourcemaps');
+
 
 // 静态服务器 + 监听 scss/html 文件
 gulp.task('serve', ['sass'], function() {
@@ -15,6 +17,7 @@ gulp.task('serve', ['sass'], function() {
     });
 
     gulp.watch("src/scss/*.scss", ['sass']);
+    gulp.watch("src/js/*.js", ['babel']);
     gulp.watch("example/*.html").on('change', browserSync.reload);
 });
 
@@ -26,7 +29,16 @@ gulp.task('sass', function() {
         .pipe(reload({stream: true}));
 });
 
-
+gulp.task('babel', () => {
+    return gulp.src('src/js/*.js')
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('dist/js'))
+        .pipe(reload({stream:true}))
+});
  
 
 
