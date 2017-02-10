@@ -1,5 +1,4 @@
 let defaultCofig = {
-
 }
 
 class Calendar{
@@ -8,4 +7,5 @@ class Calendar{
 		this.config = Object.assign({}, defaultCofig, config);
 	}
 }
+
 

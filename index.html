@@ -6,11 +6,31 @@
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no" />
 </head>
 <body>
-<div id="calendar"></div>
+<div class="wrap">
+	<header class="header">Calendar</header>
+	<div id="calendar">
+		<table>
+			<tr>
+				<td>星期一</td>
+				<td>星期二</td>
+				<td>星期三</td>
+				<td>星期三</td>
+				<td>星期四</td>
+				<td>星期五</td>
+				<td>星期六</td>
+				<td>星期日</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
+<div class="box"></div>
 <script src='/dist/js/mobileCalendar.js'></script>
 <script>
 	new Calendar('calendar',{
-		
 	})
 </script>
 </body>

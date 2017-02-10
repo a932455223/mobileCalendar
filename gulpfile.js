@@ -18,7 +18,7 @@ gulp.task('serve', ['sass'], function() {
 
     gulp.watch("src/scss/*.scss", ['sass']);
     gulp.watch("src/js/*.js", ['babel']);
-    gulp.watch("example/*.html").on('change', browserSync.reload);
+    gulp.watch("index.html").on('change', browserSync.reload);
 });
 
 // scss编译后的css将注入到浏览器里实现更新
