@@ -3,13 +3,16 @@
 <head>
 	<title>mobile calendar</title>
 	<link rel="stylesheet" href="/dist/css/index.css">
+	<link rel="stylesheet" href="/dist/css/calendar.css">
 	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0,user-scalable=no" />
 </head>
 <body>
 <div class="wrap">
 	<header class="header">Calendar</header>
 	<div id="calendar">
-		<table class="tb-cal">
+		<ul class="cal-list cal-clear">
+			<li>
+				<table class="cal-tb">
 			<tr>
 				<td>一</td>
 				<td>二</td>
@@ -71,6 +74,8 @@
 				<td>5</td>
 			</tr>
 		</table>
+			</li>
+		</ul>
 	</div>
 </div>
 <div>
@@ -83,7 +88,7 @@
 </div>
 <script src='/dist/js/mobileCalendar.js'></script>
 <script>
-	new Calendar('calendar',{
+	var cal = new Calendar('calendar',{
 	})
 </script>
 </body>

@@ -13,33 +13,34 @@ gulp.task('serve', ['sass'], function() {
         server: {
             baseDir:'./',
             index:'index.html'
-        }
+        },
+        open:false
     });
 
-    gulp.watch("src/scss/*.scss", ['sass']);
-    gulp.watch("src/js/*.js", ['babel']);
+    gulp.watch("dist/scss/*.scss", ['sass']);
+    gulp.watch("dist/js/*.js").on('change',browserSync.reload);
     gulp.watch("index.html").on('change', browserSync.reload);
 });
 
 // scss编译后的css将注入到浏览器里实现更新
 gulp.task('sass', function() {
-    return gulp.src("src/scss/*.scss")
+    return gulp.src("dist/scss/*.scss")
         .pipe(sass())
         .pipe(gulp.dest("dist/css"))
         .pipe(reload({stream: true}));
 });
 
-gulp.task('babel', () => {
-    return gulp.src('src/js/*.js')
-        .pipe(sourcemaps.init())
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('dist/js'))
-        .pipe(reload({stream:true}))
-});
+// gulp.task('babel', () => {
+//     return gulp.src('src/js/*.js')
+//         .pipe(sourcemaps.init())
+//         .pipe(babel({
+//             presets: ['es2015']
+//         }))
+//         .pipe(sourcemaps.write())
+//         .pipe(gulp.dest('dist/js'))
+//         .pipe(reload({stream:true}))
+// });
  
 
 
-gulp.task('default', ['serve']);
+gulp.task('default', ['sass','serve']);
