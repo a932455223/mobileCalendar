@@ -1,0 +1,31 @@
+.cal-list{
+	list-style:none;
+	padding:0;
+	li{
+		float:left;
+	}
+}
+
+.cal-tb{
+	width:100%;
+	color:#787777;
+	font-size:14px;
+	border-bottom:2px solid #EDF2F5;
+	td{
+		text-align:center;
+		height:2.5rem;
+	}
+}
+
+.cal-clear{
+	zoom:1;
+	&::before,&::after{
+		content:'';
+		display:block;
+		overflow:hidden;
+	}
+
+	&::after{
+		clear:both;
+	}
+}
