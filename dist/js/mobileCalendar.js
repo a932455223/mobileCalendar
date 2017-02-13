@@ -1,10 +1,25 @@
 (function(Calendar){
 'use strict'
-	var defaultConfig = {},
+
+	var defaultConfig = {
+		transition:'fade', //slide
+		i18n:{
+			'en':{
+				days:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+			},
+			'zh':{
+				days:['一','二','三','四','五','六','日']
+			}
+		},
+		language:'en'
+	},
 			divStyle = document.createElement('div').style,
 			createFragment = document.createDocumentFragment,
 			createElement = function(tag){
 				return document.createElement(tag);
+			},
+			createTextNode = function(text){
+				return document.createTextNode(text);
 			},
 			cssVendor = (function(){
 				var prefixs = ['-webkit-','-moz-','-o-','-ms-'],
@@ -47,6 +62,92 @@
 		return rest;
 	}
 
+	function getDates(date){
+		var dates = [];
+			var currentDate = new Date(date);
+			var temp;
+			var remainDays;
+			var firstDayOfCurrentMonth = (function(){
+				var d = new Date(date);
+				d.setDate(1);
+				return d.getDay();
+			}.bind(this))();
+
+			var lastDateOfPreviousMonth = (function(){
+				var d = new Date(date);
+				d.setDate(0)
+				return d;
+			}.bind(this))();
+			
+
+			var lastDateOfCurrentMonth = (function(){
+				var d = new Date(date);
+				d.setDate(1);
+				d.setMonth(d.getMonth()+1);
+				d.setDate(0);
+				return d;
+			}.bind(this))();			
+
+
+			for(var i = firstDayOfCurrentMonth - 2;i >= 0;i--){
+				dates.push({
+					year:lastDateOfPreviousMonth.getFullYear(),
+					month:lastDateOfPreviousMonth.getMonth(),
+					date:lastDateOfPreviousMonth.getDate() - i
+				});
+			}
+
+			temp = lastDateOfCurrentMonth.getDate();
+			for(var i=1;i <= temp;i++){
+				dates.push({
+					year:lastDateOfCurrentMonth.getFullYear(),
+					month:lastDateOfCurrentMonth.getMonth(),
+					date:i
+				});
+			}
+
+			remainDays = 35 - dates.length;
+			temp = new Date(date);
+			temp.setDate(1);
+			temp.setMonth(temp.getMonth()+1);
+
+			for(var i =1;i <= remainDays;i++){
+				dates.push({
+					year:temp.getFullYear(),
+					month:temp.getMonth(),
+					date:i
+				})
+			}
+
+			return dates;
+	}
+
+	function getTable(dates,tbHead){
+		var table = createElement('table');
+		var tr = createElement('tr');
+		tbHead.forEach(function(val,index){
+			var td = createElement('td');
+			var text = createTextNode(val);
+			td.appendChild(text);
+			tr.appendChild(td);
+		});
+		table.appendChild(tr);
+		tr = createElement('tr');
+
+		dates.forEach(function(obj,index){
+			var td = createElement('td');
+			var date = createTextNode(obj.date);
+			td.appendChild(date);
+			tr.appendChild(td);
+			if((index+1) % 7 === 0){
+				table.appendChild(tr);
+				tr = createElement('tr');
+			}
+		})
+
+		return table;
+	}
+
 	Calendar.prototype = {
 		init:function(config){
 			var self = this;
@@ -68,54 +169,15 @@
 			// var docFrag = createFragment();
 			// var ul = createElement('ul');
 			// var li = createElement('li');
-			var dates = [];
-			var table = createElement('table');
-			var currentDate = new Date(this.config.currentDate);
+			var dates = getDates(this.config.currentDate);
+			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
-			var firstDayOfCurrentMonth = (function(){
-				var d = new Date(this.config.currentDate);
-				d.setDate(1);
-				return d.getDay();
-			}.bind(this))();
+			table.classList.add('cal-tb');
+			this.container.appendChild(table);
 
-			var lastDateOfPreviousMonth = (function(){
-				var d = new Date(this.config.currentDate);
-				d.setDate(0)
-				return d.getDate();
-			}.bind(this))();
-			
-
-			var lastDateOfCurrentMonth = (function(){
-				var d = new Date(this.config.currentDate);
-				d.setDate(1);
-				d.setMonth(d.getMonth()+1);
-				d.setDate(0);
-				return d.getDate();
-			}.bind(this))();			
-
-
-			for(var i = firstDayOfCurrentMonth - 2;i >= 0;i--){
-
-				dates.push({
-					date:lastDateOfPreviousMonth-i
-				});
+			if(this.config.transition === 'fade'){
+				
 			}
-
-			for(var i=1;i <= lastDateOfCurrentMonth;i++){
-				dates.push({
-					date:i
-				});
-			}
-
-			var remainDays = 35 - dates.length;
-
-			for(var i =1;i <= remainDays;i++){
-				dates.push({
-					date:i
-				})
-			}
-
-			console.log(dates);
 		}
 	}
 
