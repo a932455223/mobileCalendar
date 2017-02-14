@@ -14,7 +14,6 @@
 		language:'en'
 	},
 			divStyle = document.createElement('div').style,
-			createFragment = document.createDocumentFragment,
 			createElement = function(tag){
 				return document.createElement(tag);
 			},
@@ -166,14 +165,21 @@
 		},
 		render:function(){
 
-			// var docFrag = createFragment();
+			var docFrag = document.createDocumentFragment();
 			// var ul = createElement('ul');
 			// var li = createElement('li');
+			var calHeader = createElement('div');
+			calHeader.classList.add('cal-header');
+			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">9月</span><a class="cal-next">></a>';
+
 			var dates = getDates(this.config.currentDate);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
 			table.classList.add('cal-tb');
-			this.container.appendChild(table);
+
+			docFrag.appendChild(calHeader);
+			docFrag.appendChild(table);
+			this.container.appendChild(docFrag);
 
 			if(this.config.transition === 'fade'){
 				

@@ -21,3 +21,13 @@
     overflow: hidden; }
   .cal-clear::after {
     clear: both; }
+
+.cal-header {
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  color: #C8C8C8; }
+  .cal-header .cal-pre {
+    margin-right: 35px; }
+  .cal-header .cal-next {
+    margin-left: 35px; }

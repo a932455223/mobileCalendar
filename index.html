@@ -24,6 +24,15 @@
 <script src='/dist/js/mobileCalendar.js'></script>
 <script>
 	var cal = new Calendar('calendar',{
+		specialDays:{
+			blue:{
+				date:'2017-2-16',
+				className:'today',
+				handler:function(){
+					console.log('I\'m trigger');		
+				}
+			}
+		}
 	})
 </script>
 </body>

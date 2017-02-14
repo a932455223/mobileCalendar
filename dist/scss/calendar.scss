@@ -29,3 +29,18 @@
 		clear:both;
 	}
 }
+
+$calHeaderHeight:35px;
+$arrowPadding:35px;
+.cal-header{
+	height:$calHeaderHeight;
+	line-height:$calHeaderHeight;
+	text-align:center;
+	color:#C8C8C8;
+	.cal-pre{
+		margin-right:$arrowPadding;
+	}
+	.cal-next{
+		margin-left:$arrowPadding;
+	}
+}
