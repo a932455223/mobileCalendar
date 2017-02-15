@@ -1,46 +1,71 @@
-.cal-list{
-	list-style:none;
-	padding:0;
-	li{
-		float:left;
-	}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-.cal-tb{
-	width:100%;
-	color:#787777;
-	font-size:14px;
-	border-bottom:2px solid #EDF2F5;
-	td{
-		text-align:center;
-		height:2.5rem;
-	}
+.fadeIn{
+    animation-fill-mode: both;
+    animation:fadeIn 1s ease;            
 }
 
-.cal-clear{
-	zoom:1;
-	&::before,&::after{
-		content:'';
-		display:block;
-		overflow:hidden;
-	}
+.cal-list {
+    list-style: none;
+    height:100%;
+    padding: 0;
+    margin: 0;
+    li {
+        height: 100%;
+        float: left;
 
-	&::after{
-		clear:both;
-	}
+    }
+
+
+
+}
+
+.cal-body {
+    overflow:hidden;
+    .cal-tb {
+        width: 100%;
+        height: 100%;
+        color: #787777;
+        font-size: 14px;
+        border-bottom: 2px solid #EDF2F5;
+        td {
+            text-align: center;
+        }
+    }
+}
+
+.cal-clear {
+    zoom: 1;
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+        overflow: hidden;
+    }
+    &::after {
+        clear: both;
+    }
 }
 
 $calHeaderHeight:35px;
 $arrowPadding:35px;
-.cal-header{
-	height:$calHeaderHeight;
-	line-height:$calHeaderHeight;
-	text-align:center;
-	color:#C8C8C8;
-	.cal-pre{
-		margin-right:$arrowPadding;
-	}
-	.cal-next{
-		margin-left:$arrowPadding;
-	}
+.cal-header {
+    height: $calHeaderHeight;
+    line-height: $calHeaderHeight;
+    text-align: center;
+    color: #C8C8C8;
+    .cal-pre {
+        margin-right: $arrowPadding;
+    }
+    .cal-next {
+        margin-left: $arrowPadding;
+    }
 }

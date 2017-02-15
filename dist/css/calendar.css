@@ -1,17 +1,32 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+.fadeIn {
+  animation-fill-mode: both;
+  animation: fadeIn 1s ease; }
+
 .cal-list {
   list-style: none;
-  padding: 0; }
+  height: 100%;
+  padding: 0;
+  margin: 0; }
   .cal-list li {
+    height: 100%;
     float: left; }
 
-.cal-tb {
-  width: 100%;
-  color: #787777;
-  font-size: 14px;
-  border-bottom: 2px solid #EDF2F5; }
-  .cal-tb td {
-    text-align: center;
-    height: 2.5rem; }
+.cal-body {
+  overflow: hidden; }
+  .cal-body .cal-tb {
+    width: 100%;
+    height: 100%;
+    color: #787777;
+    font-size: 14px;
+    border-bottom: 2px solid #EDF2F5; }
+    .cal-body .cal-tb td {
+      text-align: center; }
 
 .cal-clear {
   zoom: 1; }

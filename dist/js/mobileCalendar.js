@@ -44,6 +44,32 @@
 		return style[cssProp];
 	}
 
+	function setStyle(elem, cssProp, cssValue) {
+	    if (arguments.length === 2 && typeof arguments[1] === 'object') {
+	        var styleObj = arguments[1];
+	        for (var k in styleObj) {
+	            setStyle(elem, k, styleObj[k]);
+	        }
+	    } else if (arguments.length === 3) {
+	    	var p = testStyle(cssProp);
+	    	elem.style[p] = cssValue;
+	    }
+	}
+
+
+
+	function testStyle(cssProp){
+		var prop = camelCase(cssProp);
+		if(prop in divStyle){
+			return prop;
+		}
+		prop =  camelCase(cssVendor + cssProp);
+		if(prop in divStyle){
+			return prop;
+		}
+
+		return false;
+	}
 
 	function assign(){
 		var args = arguments;
@@ -144,6 +170,7 @@
 			}
 		})
 
+		table.classList.add('cal-tb');
 		return table;
 	}
 
@@ -152,6 +179,8 @@
 			var self = this;
 			defaultConfig.currentDate = new Date();
 			self.config = assign({},defaultConfig,config);
+			self.currentMonth = new Date(self.config.currentDate);
+			self.currentMonth.setDate(1);
 			self.width = (function(){
 				var _w = self.container.offsetWidth;
 				['borderLeftWidth','borderRightWidth','paddingLeft','paddingRight'].forEach(function(prop){
@@ -162,28 +191,61 @@
 			})()
 
 			self.render();
+
+			//绑定事件
+			document.querySelector('.cal-pre').addEventListener('click',function(){
+				console.log(self.currentMonth);
+				self.currentMonth.setMonth(self.currentMonth.getMonth() - 1);
+				self.update();
+			})
+
+			document.querySelector('.cal-next').addEventListener('click',function(){
+				console.log('red');
+				self.currentMonth.setMonth(self.currentMonth.getMonth() + 1);
+				self.update();
+			});
+
 		},
 		render:function(){
-
 			var docFrag = document.createDocumentFragment();
-			// var ul = createElement('ul');
-			// var li = createElement('li');
+			var calBody = createElement('div');
+			var ul = createElement('ul');
+			var li = createElement('li');
+			calBody.classList.add('cal-body');
+			calBody.style.width = this.width + 'px';
+			calBody.style.height = this.width * 0.8 + 'px';
+			li.style.width = this.width + 'px';
+
 			var calHeader = createElement('div');
 			calHeader.classList.add('cal-header');
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">9月</span><a class="cal-next">></a>';
 
-			var dates = getDates(this.config.currentDate);
+			var dates = getDates(this.currentMonth);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
-			table.classList.add('cal-tb');
-
-			docFrag.appendChild(calHeader);
-			docFrag.appendChild(table);
-			this.container.appendChild(docFrag);
-
 			if(this.config.transition === 'fade'){
-				
+				li.appendChild(table);
+				ul.appendChild(li);
+				ul.classList.add('cal-list');
+				ul.classList.add('cal-clear');
+				calBody.appendChild(ul);
+				docFrag.appendChild(calHeader);
+				docFrag.appendChild(calBody);
+				this.container.appendChild(docFrag);
+				this.currentTable = table;
+				this.currentLi = li;
 			}
+		},
+		update:function(){
+			this.currentLi.classList.add('fadeIn');
+			var dates = getDates(this.currentMonth);
+			var table = getTable(dates,this.config.i18n[this.config.language].days);
+			this.currentTable.remove();
+			table.classList.add('fadeIn');
+			this.currentLi.append(table);
+			this.currentTable = table;
+
+			
 		}
 	}
 
