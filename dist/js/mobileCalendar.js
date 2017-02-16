@@ -174,6 +174,11 @@
 		return table;
 	}
 
+
+	function getSpecailDays(specials){
+		
+	}
+
 	Calendar.prototype = {
 		init:function(config){
 			var self = this;
