@@ -194,13 +194,11 @@
 
 			//绑定事件
 			document.querySelector('.cal-pre').addEventListener('click',function(){
-				console.log(self.currentMonth);
 				self.currentMonth.setMonth(self.currentMonth.getMonth() - 1);
 				self.update();
 			})
 
 			document.querySelector('.cal-next').addEventListener('click',function(){
-				console.log('red');
 				self.currentMonth.setMonth(self.currentMonth.getMonth() + 1);
 				self.update();
 			});
@@ -218,7 +216,7 @@
 
 			var calHeader = createElement('div');
 			calHeader.classList.add('cal-header');
-			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">9月</span><a class="cal-next">></a>';
+			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
 
 			var dates = getDates(this.currentMonth);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
@@ -234,6 +232,7 @@
 				this.container.appendChild(docFrag);
 				this.currentTable = table;
 				this.currentLi = li;
+				this.header = calHeader;
 			}
 		},
 		update:function(){
@@ -244,8 +243,7 @@
 			table.classList.add('fadeIn');
 			this.currentLi.append(table);
 			this.currentTable = table;
-
-			
+			this.header.querySelector('.cal-month').innerHTML = (this.currentMonth.getMonth()+1)+'月';
 		}
 	}
 
