@@ -29,7 +29,8 @@
 					}
 				}
 				return '';
-	})();
+	})(),
+	toString = Object.prototype.toString;
 
 
 	function camelCase(str){
@@ -175,8 +176,49 @@
 	}
 
 
-	function getSpecailDays(specials){
-		
+	function getSpecailDates(specials){
+		var dates;
+		var spec = {};
+		var reg = /(\d{4})(-||\/)(\d{1,2})\2(\d{1,2})/;
+		for(var k in specials){
+			dates = specials[k].dates;
+
+			if(toString.call(dates).slice(8,-1) === 'Array'){
+
+				dates.forEach(function(date){
+					var rest = reg.exec(date);
+					var year = parseInt(rest[1]).toString();
+					var month = parseInt(rest[3]).toString();
+					var date = parseInt(rest[4]).toString();
+					if(Object.keys(spec).indexOf(year) === -1){
+						spec[year] = {};
+						spec[year][month] = {};
+						spec[year][month][date] = {
+							className:[]
+						}
+					}else{
+						if(Object.keys(spec[year]).indexOf(month) === -1){
+							spec[year][month] = {};
+							spec[year][month][date] = {
+								className:[]
+							}
+						}else {
+							spec[year][month][date] = {
+								className:[]
+							}
+						}
+
+					}
+
+					spec[year][month][date].className.push(k);
+				});
+
+			}else{
+
+			}
+		}
+
+		console.log(spec);
 	}
 
 	Calendar.prototype = {
@@ -194,6 +236,9 @@
 
 				return _w;
 			})()
+
+
+			var specilas = getSpecailDates(self.config.specialDays);
 
 			self.render();
 
@@ -222,7 +267,6 @@
 			var calHeader = createElement('div');
 			calHeader.classList.add('cal-header');
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
-
 			var dates = getDates(this.currentMonth);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 

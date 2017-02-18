@@ -26,11 +26,18 @@
 <script>
 	var cal = new Calendar('calendar',{
 		specialDays:{
-			hasEvent:{
-				date:['2017-2-16','2017-3-17','2017-4-1'],
-				className:'today',
+			read:{
+				dates:['2017-02-16','2017-3-17','2017-4-1'],
+				className:'read',
 				handler:function(){
-					console.log('I\'m trigger');		
+					console.log('I\'ll read some book.');		
+				}
+			},
+			fitness:{
+				dates:'2017-02-16',
+				className:'fitness',
+				handler:function(){
+					console.log('I\'ll do some fitness.');
 				}
 			}
 		}
