@@ -33,6 +33,10 @@
 	toString = Object.prototype.toString;
 
 
+	function getType(param){
+		return toString.call(param).slice(8,-1);
+	}
+
 	function camelCase(str){
 		return (str+'').replace('-ms-','ms-').replace(/-([a-z]|[0-9])/ig,function(match,letter){
 			return letter.toUpperCase();
@@ -88,7 +92,7 @@
 		return rest;
 	}
 
-	function getDates(date){
+	function getDates(date,specialsDays){
 		var dates = [];
 			var currentDate = new Date(date);
 			var temp;
@@ -180,13 +184,9 @@
 		var dates;
 		var spec = {};
 		var reg = /(\d{4})(-||\/)(\d{1,2})\2(\d{1,2})/;
-		for(var k in specials){
-			dates = specials[k].dates;
 
-			if(toString.call(dates).slice(8,-1) === 'Array'){
-
-				dates.forEach(function(date){
-					var rest = reg.exec(date);
+		function parseDate(date){
+			var rest = reg.exec(date);
 					var year = parseInt(rest[1]).toString();
 					var month = parseInt(rest[3]).toString();
 					var date = parseInt(rest[4]).toString();
@@ -203,22 +203,34 @@
 								className:[]
 							}
 						}else {
-							spec[year][month][date] = {
-								className:[]
+
+							if(!spec[year][month][date]){
+								spec[year][month][date] = {
+									className:[]
+								}
 							}
 						}
 
 					}
 
 					spec[year][month][date].className.push(k);
+		}
+
+		for(var k in specials){
+			dates = specials[k].dates;
+
+			if(getType(dates) === 'Array'){
+
+				dates.forEach(function(date){
+					parseDate(date);
 				});
 
 			}else{
-
+				parseDate(dates);
 			}
 		}
 
-		console.log(spec);
+		return spec;
 	}
 
 	Calendar.prototype = {
@@ -238,7 +250,7 @@
 			})()
 
 
-			var specilas = getSpecailDates(self.config.specialDays);
+			self.specialDays = getSpecailDates(self.config.specialDays);
 
 			self.render();
 
@@ -267,7 +279,7 @@
 			var calHeader = createElement('div');
 			calHeader.classList.add('cal-header');
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
-			var dates = getDates(this.currentMonth);
+			var dates = getDates(this.currentMonth,this.specialDays);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
 			if(this.config.transition === 'fade'){
@@ -286,7 +298,7 @@
 		},
 		update:function(){
 			this.currentLi.classList.add('fadeIn');
-			var dates = getDates(this.currentMonth);
+			var dates = getDates(this.currentMonth,this.specialDays);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 			this.currentTable.remove();
 			table.classList.add('fadeIn');
