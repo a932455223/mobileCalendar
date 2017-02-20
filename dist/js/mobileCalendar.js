@@ -97,11 +97,13 @@
 			var currentDate = new Date(date);
 			var temp;
 			var remainDays;
-			var firstDayOfCurrentMonth = (function(){
+			var firstDateOfCurrentMonth = (function(){
 				var d = new Date(date);
 				d.setDate(1);
-				return d.getDay();
+				return d;
 			}.bind(this))();
+
+			var firstDayOfCurrentMonth = firstDateOfCurrentMonth.getDay();
 
 			var lastDateOfPreviousMonth = (function(){
 				var d = new Date(date);
@@ -116,15 +118,30 @@
 				d.setMonth(d.getMonth()+1);
 				d.setDate(0);
 				return d;
-			}.bind(this))();			
+			}.bind(this))();
 
+			var yearOfPreviousMonth = lastDateOfPreviousMonth.getFullYear();
+			var previousMonth = lastDateOfPreviousMonth.getMonth();
+			var dateOfPreviousMonth = lastDateOfPreviousMonth.getDate();
+			var dateIndex = Object.keys(specialsDays).indexOf(yearOfPreviousMonth);
+			var checkDate = false;
+
+			if(dateIndex !==-1 && Object.keys(specialsDays[dateIndex]).indexOf(previousMonth) !== -1){
+				checkDate = true;
+			}
 
 			for(var i = firstDayOfCurrentMonth - 2;i >= 0;i--){
-				dates.push({
-					year:lastDateOfPreviousMonth.getFullYear(),
-					month:lastDateOfPreviousMonth.getMonth(),
-					date:lastDateOfPreviousMonth.getDate() - i
-				});
+				var _obj = {
+					year:yearOfPreviousMonth,
+					month:previousMonth,
+					date:dateOfPreviousMonth - i
+				};
+
+				if(checkDate && Ojbect.keys(specialsDays[yearOfPreviousMonth])){
+
+				}
+
+				dates.push(_obj);
 			}
 
 			temp = lastDateOfCurrentMonth.getDate();
