@@ -121,49 +121,76 @@
 			}.bind(this))();
 
 			var yearOfPreviousMonth = lastDateOfPreviousMonth.getFullYear();
-			var previousMonth = lastDateOfPreviousMonth.getMonth();
+			var previousMonth = lastDateOfPreviousMonth.getMonth()+1;
 			var dateOfPreviousMonth = lastDateOfPreviousMonth.getDate();
-			var dateIndex = Object.keys(specialsDays).indexOf(yearOfPreviousMonth);
+
 			var checkDate = false;
 
-			if(dateIndex !==-1 && Object.keys(specialsDays[dateIndex]).indexOf(previousMonth) !== -1){
+			if(specialsDays[yearOfPreviousMonth] && specialsDays[yearOfPreviousMonth][previousMonth]){
 				checkDate = true;
 			}
 
 			for(var i = firstDayOfCurrentMonth - 2;i >= 0;i--){
+				var _cdate = dateOfPreviousMonth - i;
 				var _obj = {
 					year:yearOfPreviousMonth,
-					month:previousMonth,
-					date:dateOfPreviousMonth - i
+					month:previousMonth-1,
+					date:_cdate
 				};
 
-				if(checkDate && Ojbect.keys(specialsDays[yearOfPreviousMonth])){
-
+				if(checkDate && specialsDays[yearOfPreviousMonth][previousMonth][_cdate] && specialsDays[yearOfPreviousMonth][previousMonth][_cdate].className.length > 0 ){
+					_obj.className = specialsDays[yearOfPreviousMonth][previousMonth][_cdate].className.join(' ');
 				}
 
 				dates.push(_obj);
 			}
+			var yearOfCurrentMonth = lastDateOfCurrentMonth.getFullYear();
+			var currentMonth = lastDateOfCurrentMonth.getMonth()+1;
 
 			temp = lastDateOfCurrentMonth.getDate();
+			checkDate = false;
+			
+			if(specialsDays[yearOfCurrentMonth] && specialsDays[yearOfCurrentMonth][currentMonth]){
+				checkDate = true;
+			}
+
 			for(var i=1;i <= temp;i++){
-				dates.push({
-					year:lastDateOfCurrentMonth.getFullYear(),
-					month:lastDateOfCurrentMonth.getMonth(),
+				 _obj = {
+					year:yearOfCurrentMonth,
+					month:currentMonth-1,
 					date:i
-				});
+				}
+
+				if(checkDate && specialsDays[yearOfCurrentMonth][currentMonth][i] && specialsDays[yearOfCurrentMonth][currentMonth][i].className.length > 0){
+					_obj.className = specialsDays[yearOfCurrentMonth][currentMonth][i].className.join(' ');
+				}
+
+				dates.push(_obj);
 			}
 
 			remainDays = 35 - dates.length;
 			temp = new Date(date);
 			temp.setDate(1);
 			temp.setMonth(temp.getMonth()+1);
+			var yearOfNextMonth = temp.getFullYear();
+			var monthOfNextMonth = temp.getMonth()+1;
+			checkDate = false;
+			if(specialsDays[yearOfNextMonth] && specialsDays[yearOfNextMonth][monthOfNextMonth]){
+				checkDate = true;
+			}
 
 			for(var i =1;i <= remainDays;i++){
-				dates.push({
-					year:temp.getFullYear(),
-					month:temp.getMonth(),
+				  _obj = {
+					year:yearOfNextMonth,
+					month:monthOfNextMonth-1,
 					date:i
-				})
+				};
+
+				if(checkDate && specialsDays[yearOfNextMonth][monthOfNextMonth][i] && specialsDays[yearOfNextMonth][monthOfNextMonth][i].className.length > 0){
+					_obj.className = specialsDays[yearOfNextMonth][monthOfNextMonth][i].join(' ');
+				}
+
+				dates.push(_obj);
 			}
 
 			return dates;
@@ -184,6 +211,9 @@
 		dates.forEach(function(obj,index){
 			var td = createElement('td');
 			var date = createTextNode(obj.date);
+			if(obj.className){
+				td.className = obj.className;
+			}
 			td.appendChild(date);
 			tr.appendChild(td);
 			if((index+1) % 7 === 0){
@@ -297,6 +327,7 @@
 			calHeader.classList.add('cal-header');
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
 			var dates = getDates(this.currentMonth,this.specialDays);
+			console.log(dates);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
 			if(this.config.transition === 'fade'){
