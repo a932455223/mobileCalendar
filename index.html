@@ -9,9 +9,25 @@
 		td.read{
 			color:white;
 			background:url(/dist/images/circle.png) center center no-repeat;
-			background-size:auto 100%;
+			background-size:auto 95%;
 		}
 		
+		td.fitness{
+			position:relative;
+		}
+
+		td.fitness:before{
+			position:absolute;
+			display: block;
+			content:'';
+			width:10px;
+			height:10px;
+			border-radius:50%;
+			background-color:#F6604E;
+			bottom:0;
+			left:50%;
+			transform:translateX(-50%);
+		}
 	</style>
 </head>
 <body>
@@ -41,7 +57,7 @@
 				}
 			},
 			fitness:{
-				dates:'2017-02-16',
+				dates:'2017-02-19',
 				handler:function(){
 					console.log('I\'ll do some fitness.');
 				}

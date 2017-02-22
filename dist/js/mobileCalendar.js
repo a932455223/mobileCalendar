@@ -187,7 +187,7 @@
 				};
 
 				if(checkDate && specialsDays[yearOfNextMonth][monthOfNextMonth][i] && specialsDays[yearOfNextMonth][monthOfNextMonth][i].className.length > 0){
-					_obj.className = specialsDays[yearOfNextMonth][monthOfNextMonth][i].join(' ');
+					_obj.className = specialsDays[yearOfNextMonth][monthOfNextMonth][i].className.join(' ');
 				}
 
 				dates.push(_obj);
@@ -300,7 +300,6 @@
 			self.specialDays = getSpecailDates(self.config.specialDays);
 
 			self.render();
-
 			//绑定事件
 			document.querySelector('.cal-pre').addEventListener('click',function(){
 				self.currentMonth.setMonth(self.currentMonth.getMonth() - 1);
@@ -310,6 +309,17 @@
 			document.querySelector('.cal-next').addEventListener('click',function(){
 				self.currentMonth.setMonth(self.currentMonth.getMonth() + 1);
 				self.update();
+			});
+
+			document.querySelector('.cal-tb').addEventListener('click',function(evt){
+
+				evt.target.className.split(' ').forEach(function(cls){
+
+					if(self.config.specialDays[cls] && typeof self.config.specialDays[cls].handler === 'function'){//触发事件
+							self.config.specialDays[cls].handler.call(evt.target,evt);
+					}
+				})
+
 			});
 
 		},
@@ -327,7 +337,6 @@
 			calHeader.classList.add('cal-header');
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
 			var dates = getDates(this.currentMonth,this.specialDays);
-			console.log(dates);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
 
 			if(this.config.transition === 'fade'){
