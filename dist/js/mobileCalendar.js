@@ -217,6 +217,7 @@
 				td.className = obj.className;
 			}
 			td.appendChild(date);
+			td.dataset.value = obj.year+'-'+obj.month+'-'+obj.date;
 			tr.appendChild(td);
 			if((index+1) % 7 === 0){
 				table.appendChild(tr);
@@ -318,7 +319,7 @@
 				evt.target.className.split(' ').forEach(function(cls){
 
 					if(self.config.specialDays[cls] && typeof self.config.specialDays[cls].handler === 'function'){//触发事件
-							self.config.specialDays[cls].handler.call(evt.target,evt);
+							self.config.specialDays[cls].handler.call(evt.target,evt.target.dataset.value,evt);
 					}
 				})
 
