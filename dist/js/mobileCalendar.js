@@ -5,10 +5,12 @@
 		transition:'fade', //slide
 		i18n:{
 			'en':{
-				days:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+				days:["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+				months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 			},
 			'zh':{
-				days:['一','二','三','四','五','六','日']
+				days:['一','二','三','四','五','六','日'],
+				months:['一','二','三','四','五','六','七','八','九','十','十一','十二']
 			}
 		},
 		language:'en'
@@ -335,10 +337,10 @@
 
 			var calHeader = createElement('div');
 			calHeader.classList.add('cal-header');
-			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.currentMonth.getMonth()+1)+'月</span><a class="cal-next">></a>';
+			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.config.i18n[this.config.language].months[this.currentMonth.getMonth()])+'</span><a class="cal-next">></a>';
 			var dates = getDates(this.currentMonth,this.specialDays);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
-
+			console.log(this.config);
 			if(this.config.transition === 'fade'){
 				li.appendChild(table);
 				ul.appendChild(li);
@@ -361,7 +363,7 @@
 			table.classList.add('fadeIn');
 			this.currentLi.append(table);
 			this.currentTable = table;
-			this.header.querySelector('.cal-month').innerHTML = (this.currentMonth.getMonth()+1)+'月';
+			this.header.querySelector('.cal-month').innerHTML = (this.config.i18n[this.config.language].months[this.currentMonth.getMonth()]);
 		}
 	}
 
