@@ -314,7 +314,7 @@
 				self.update();
 			});
 
-			document.querySelector('.cal-tb').addEventListener('click',function(evt){
+			self.container.addEventListener('click',function(evt){
 
 				evt.target.className.split(' ').forEach(function(cls){
 
@@ -341,7 +341,6 @@
 			calHeader.innerHTML = '<a class="cal-pre"> < </a><span class="cal-month">'+(this.config.i18n[this.config.language].months[this.currentMonth.getMonth()])+'</span><a class="cal-next">></a>';
 			var dates = getDates(this.currentMonth,this.specialDays);
 			var table = getTable(dates,this.config.i18n[this.config.language].days);
-			console.log(this.config);
 			if(this.config.transition === 'fade'){
 				li.appendChild(table);
 				ul.appendChild(li);
